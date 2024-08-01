@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroNet.Infrastructure", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroNet.API", "MicroNet.API\MicroNet.API.csproj", "{54A6AD52-C7F3-4DCC-8252-63434C942330}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroNet.Tests", "MicroNet.Tests\MicroNet.Tests.csproj", "{3666EC59-9C45-4E78-8207-6CFB2F49C167}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{54A6AD52-C7F3-4DCC-8252-63434C942330}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54A6AD52-C7F3-4DCC-8252-63434C942330}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54A6AD52-C7F3-4DCC-8252-63434C942330}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3666EC59-9C45-4E78-8207-6CFB2F49C167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3666EC59-9C45-4E78-8207-6CFB2F49C167}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3666EC59-9C45-4E78-8207-6CFB2F49C167}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3666EC59-9C45-4E78-8207-6CFB2F49C167}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

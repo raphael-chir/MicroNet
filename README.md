@@ -1,4 +1,4 @@
-# Micronet DDD microservice
+# MicroNet DDD microservice
 
 ## Architecture setup
 Prerequisites : install .NET 8 https://dotnet.microsoft.com/en-us/download/dotnet/8.0
@@ -45,3 +45,20 @@ dotnet run --project MicroNet.API
 ```
 
 [http://localhost:5183/swagger/index.html](http://localhost:5183/swagger/index.html)
+
+## Tests subproject
+
+Create and configure dependencies of MicroNet.Tests project
+
+```
+dotnet new xunit -o MicroNet.Tests
+dotnet sln add ./MicroNet.Tests/MicroNet.Tests.csproj
+dotnet add ./MicroNet.Tests/MicroNet.Tests.csproj reference ./MicroNet.Domain/MicroNet.Domain.csproj
+dotnet add ./MicroNet.Tests/MicroNet.Tests.csproj reference ./MicroNet.Infrastructure/MicroNet.Infrastructure.csproj
+dotnet add ./MicroNet.Tests/MicroNet.Tests.csproj reference ./MicroNet.Application/MicroNet.Application.csproj
+```
+
+cd into Micronet.Tests and execute 
+```
+dotnet test
+```
