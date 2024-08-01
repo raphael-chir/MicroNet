@@ -1,0 +1,6 @@
+@MicroNet.API_HostAddress = http://localhost:5183
+
+GET {{MicroNet.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

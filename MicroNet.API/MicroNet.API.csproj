@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+   <ItemGroup>
+    <ProjectReference Include="..\MicroNet.Domain\MicroNet.Domain.csproj" />
+    <ProjectReference Include="..\MicroNet.Application\MicroNet.Application.csproj" />
+    <ProjectReference Include="..\MicroNet.Infrastructure\MicroNet.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
