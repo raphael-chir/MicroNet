@@ -48,7 +48,7 @@ dotnet run --project MicroNet.API
 
 ## Tests subproject
 
-Create and configure dependencies of MicroNet.Tests project
+Create and configure dependencies of MicroNet.Tests project, using XUnit and not NUnit
 
 ```
 dotnet new xunit -o MicroNet.Tests
@@ -69,3 +69,75 @@ cd into MicroNet.Tests and execute
 ```
 dotnet test
 ```
+
+See CBStandardCnxTest.cs
+
+## Dependency Injection
+
+Another connexion method is shown here.
+
+### Test first
+
+To begin, add extensions, including Couchbase.Extensions.DependencyInjection to take advantage of DI feature ans ASP.NET
+cd into MicroNet.Tests and execute
+
+```
+dotnet add package Microsoft.Extensions.DependencyInjection
+dotnet add package Microsoft.Extensions.Hosting
+dotnet add package Couchbase.Extensions.DependencyInjection --version 3.6.2
+```
+Use appsettings.json
+Create TestFixture.cs
+
+```
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Couchbase.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
+
+public class TestFixture
+{
+    public IServiceProvider ServiceProvider { get; private set; }
+    public IConfiguration Configuration { get; private set; }
+
+    public TestFixture()
+    {
+        var configurationBuilder = new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("/Users/raphael.chir/Workspaces/MicroNet/MicroNet.Tests/appsettings.json", optional: false, reloadOnChange: true); // TODO relative path  
+
+        Configuration = configurationBuilder.Build();
+
+        var host = Host.CreateDefaultBuilder()
+            .ConfigureServices((context, services) =>
+            {
+                services.AddSingleton<IConfiguration>(Configuration);
+                services.AddCouchbase(Configuration.GetSection("Couchbase")); // Refer to appsettings.json
+                services.AddCouchbaseBucket<INamedBucketProvider>("travel-sample");
+            })
+            .Build();
+
+        ServiceProvider = host.Services.CreateScope().ServiceProvider;
+    }
+}
+```
+
+appsettings.json
+
+```
+{
+    "Logging": {
+      "LogLevel": {
+        "Default": "Information",
+        "Microsoft.AspNetCore": "Warning"
+      }
+    },
+    "Couchbase": {
+      "ConnectionString": "ec2-51-20-133-117.eu-north-1.compute.amazonaws.com, ec2-16-170-172-163.eu-north-1.compute.amazonaws.com, ec2-51-20-133-117.eu-north-1.compute.amazonaws.com",
+      "Username": "admin",
+      "Password": "111111"
+    }
+  }
+```
+
+see CBCnxCBDICnxTest.cs and run tests
