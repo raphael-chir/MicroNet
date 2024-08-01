@@ -1,23 +1,21 @@
 namespace MicroNet.Tests;
 
 using System.Threading.Tasks;
-using Couchbase;
+using Couchbase.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 
-public class CBCnxTest1
+public class CBCnxCBDICnxTest : IClassFixture<TestFixture>
 {
-    [Fact]
-    public async Task Test1Async()
+    private readonly INamedBucketProvider _provider;
+
+    public CBCnxCBDICnxTest(TestFixture fixture)
     {
-        var cluster = await Cluster.ConnectAsync(
-            // Update these credentials for your Local Couchbase instance!
-            "ec2-51-20-133-117.eu-north-1.compute.amazonaws.com, ec2-16-170-172-163.eu-north-1.compute.amazonaws.com, ec2-51-20-133-117.eu-north-1.compute.amazonaws.com",
-            "admin",
-            "111111");
-
-        // get a bucket reference
-        var bucket = await cluster.BucketAsync("travel-sample");
-
-        // get a user-defined collection reference
+        _provider = fixture.ServiceProvider.GetRequiredService<INamedBucketProvider>();
+    }
+    [Fact]
+    public async Task DependencyInjectionTestAsync()
+    {
+        var bucket = await _provider.GetBucketAsync();
         var scope = await bucket.ScopeAsync("tenant_agent_00");
         var collection = await scope.CollectionAsync("users");
 
