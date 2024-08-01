@@ -4,6 +4,10 @@
     <ProjectReference Include="..\MicroNet.Domain\MicroNet.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CouchbaseNetClient" Version="3.6.2" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>

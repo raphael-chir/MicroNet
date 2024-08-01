@@ -58,7 +58,14 @@ dotnet add ./MicroNet.Tests/MicroNet.Tests.csproj reference ./MicroNet.Infrastru
 dotnet add ./MicroNet.Tests/MicroNet.Tests.csproj reference ./MicroNet.Application/MicroNet.Application.csproj
 ```
 
-cd into Micronet.Tests and execute 
+## Infrastructure : Add Couchbase .NET SDK dependency
+
+cd into MicroNet.Infrastructure and execute
+```
+dotnet add package CouchbaseNetClient --version 3.6.2
+```
+
+cd into MicroNet.Tests and execute 
 ```
 dotnet test
 ```
