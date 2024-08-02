@@ -205,3 +205,6 @@ dotnet clean
 dotnet build
 dotnet run --project MicroNet.API
 ```
+### Data generation
+
+See DataGenTests.cs to create a sample of data

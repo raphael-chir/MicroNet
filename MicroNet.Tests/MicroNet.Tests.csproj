@@ -29,4 +29,8 @@
     <ProjectReference Include="..\MicroNet.Application\MicroNet.Application.csproj" />
   </ItemGroup>
 
+   <ItemGroup>
+    <Folder Include="Domain\model\" />
+  </ItemGroup>
+
 </Project>
