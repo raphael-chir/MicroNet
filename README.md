@@ -145,3 +145,63 @@ appsettings.json
 ```
 
 see CBCnxCBDICnxTest.cs and run tests
+
+## MicroNet API Configuration
+
+AS Micronet.API project access to MicroNet.Infrastructure we include Couchbase.Extensions.DependencyInjection in MicroNet.Infrastructure.csproj
+
+```
+    <PackageReference Include="Couchbase.Extensions.DependencyInjection" Version="3.6.2" />
+```
+
+In MicroNet.API update appsettings.json and appsettings.Development.json
+
+Simply configure Dependencies Injection in Program.cs 
+
+```
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+IBucket bucket;
+    try
+    {
+        bucket = app.Services.GetRequiredService<IBucketProvider>().GetBucketAsync("mat-sample").GetAwaiter().GetResult();
+    }
+    catch (Exception)
+    {
+        throw new InvalidOperationException("Ensure that you have the travel-sample bucket loaded in the cluster.");
+    }
+
+    
+app.Run();
+```
+
+ContratsController.cs calls ContratsServices that calls ContratsRepository
+Inject INamedBucketProvider in ContratsRepository
+
+```
+    public class ContratRepository : IContratRepository
+    {
+        private readonly INamedBucketProvider _provider;
+
+        public ContratRepository(INamedBucketProvider provider)
+        {
+            _provider = provider;
+        }
+
+```
+
+Clean, build and run MicroNet.API projects to see that the connexion is well established in the console
+
+```
+dotnet clean
+dotnet build
+dotnet run --project MicroNet.API
+```

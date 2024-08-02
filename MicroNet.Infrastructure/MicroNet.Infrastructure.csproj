@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="CouchbaseNetClient" Version="3.6.2" />
+    <PackageReference Include="Couchbase.Extensions.DependencyInjection" Version="3.6.2" />
   </ItemGroup>
 
   <PropertyGroup>

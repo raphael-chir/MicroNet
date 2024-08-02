@@ -1,11 +1,19 @@
 ﻿using MicroNet.Domain;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Couchbase.Extensions.DependencyInjection;
+using System.Text;
+using Couchbase.Core.IO.Transcoders;
 
 namespace MicroNet.Infrastructure
 {
     public class ContratRepository : IContratRepository
     {
+        private readonly INamedBucketProvider _provider;
+
+        public ContratRepository(INamedBucketProvider provider)
+        {
+            _provider = provider;
+        }
+
         public Task<IEnumerable<Contrat>> GetAllAsync()
         {
             throw new NotImplementedException();
