@@ -205,6 +205,19 @@ dotnet clean
 dotnet build
 dotnet run --project MicroNet.API
 ```
-### Data generation
+### XUnit Tests
 
-See DataGenTests.cs to create a sample of data
+S00CBStandardCnxTest
+S01CBDICnxTests
+S02CBKVBasicTests
+S03CBKVTransactionsTests
+S04DataGenTests
+
+## Transactions
+
+To store multiple related documents we need to perform transactions.
+We include Couchbase.Extensions.DependencyInjection in MicroNet.Infrastructure.csproj
+cd into Micronet.Infrastructure
+```
+dotnet add package Couchbase.Transactions --version 3.6.2
+```

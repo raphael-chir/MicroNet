@@ -18,5 +18,14 @@ namespace MicroNet.Domain
             Resiliations = resiliations;
             OffrePromotionnelles = offrePromotionnelles;
         }
+
+        public Situation(string id, string operation, DateTime datePremierEffet){
+            Id = id;
+            Operation = operation;
+            DatePremierEffet = datePremierEffet;
+            Assures = new List<Assure>();
+            Resiliations = new List<Resiliation>();
+            OffrePromotionnelles = new List<OffrePromotionnelle>();
+        }
     }
 }

@@ -4,43 +4,41 @@ using System.Diagnostics.Contracts;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Couchbase;
+using Couchbase.Extensions.DependencyInjection;
 using MicroNet.Domain;
+using Microsoft.Extensions.DependencyInjection;
 
-public class DataGenTest
+public class S04DataGenTests : IClassFixture<TestFixture>
 {
+    private readonly INamedBucketProvider _provider;
+
+    public S04DataGenTests(TestFixture fixture)
+    {
+        _provider = fixture.ServiceProvider.GetRequiredService<INamedBucketProvider>();
+    }
     [Fact]
     public async Task DataGenTestAsync()
     {
-        var cluster = await Cluster.ConnectAsync(
-            // Update these credentials for your Local Couchbase instance!
-            "ec2-51-20-133-117.eu-north-1.compute.amazonaws.com, ec2-16-170-172-163.eu-north-1.compute.amazonaws.com, ec2-51-20-133-117.eu-north-1.compute.amazonaws.com",
-            "admin",
-            "111111");
-
-        // get a bucket reference
-        var bucket = await cluster.BucketAsync("mat-sample");
-
-        // get a user-defined collection reference
+        var bucket = await _provider.GetBucketAsync();
         var scope = await bucket.ScopeAsync("contrats");
         var collectionContrats = await scope.CollectionAsync("contrats");
         var collectionSituations = await scope.CollectionAsync("situations");
 
-        // data
-        string[] operationsSituations = ["AVT", "REC", "RAF"];
-        string[] offrePromoCode = ["GOLD", "SILVER", "BRONZE"];
-        string[] motivationsResiliations = ["Insatisfaction", "Concurrence"];
-        string[] assureNom = ["Gauthier", "Moudou", "Chang", "Zimmer", "Favatti", "Fernandez", "Benton", "Martin", "Dupont", "Joly"];
-        string[] assurePrenom = ["Theo", "Aminata", "François", "Hans", "Mario", "Jose", "Gerard", "Lucie", "Josiane", "Gustave"];
+        string numSocietaire = Guid.NewGuid().ToString().Split("-")[4]; ;
 
         // Contrats generation
         Random aleatoire = new Random();
 
-        for (int k = 0; k < 100; k++)
+        for (int k = 0; k < 10; k++)
         {
             int situationsCount = aleatoire.Next(1, 4);
             int yearDebutEffet = aleatoire.Next(2015, 2025);
             int monthDebutEffet = aleatoire.Next(1, 13);
-            string numSocietaire = Guid.NewGuid().ToString().Split("-")[4];
+            if (aleatoire.Next(2) == 0)
+            {
+                numSocietaire = Guid.NewGuid().ToString().Split("-")[4];
+            }
+
             string idContrat = Guid.NewGuid().ToString();
 
             var contrat = new Contrat(idContrat, numSocietaire, new DateTime(yearDebutEffet, monthDebutEffet, 18, 16, 32, 0), new List<SituationRef>());
@@ -61,14 +59,14 @@ public class DataGenTest
                     datePremierEffet = new DateTime(year, month, 18, 16, 32, 0);
                 }
 
-                var situation = new Situation(idSituation, operationsSituations[opCount], datePremierEffet, new List<Assure>(), new List<Resiliation>(), new List<OffrePromotionnelle>());
+                var situation = new Situation(idSituation, SampleDataValues.operationsSituations[opCount], datePremierEffet, new List<Assure>(), new List<Resiliation>(), new List<OffrePromotionnelle>());
                 //
                 int assuresCount = aleatoire.Next(1, 4);
                 for (int j = 0; j < assuresCount; j++)
                 {
                     int magic = aleatoire.Next(10);
-                    string nom = assureNom[magic];
-                    string prenom = assurePrenom[magic];
+                    string nom = SampleDataValues.assureNom[magic];
+                    string prenom = SampleDataValues.assurePrenom[magic];
                     situation.Assures.Add(new Assure(nom, prenom));
                 }
                 //
@@ -78,7 +76,7 @@ public class DataGenTest
                     int year = aleatoire.Next(2015, 2025);
                     int month = aleatoire.Next(1, 13);
                     int magic = aleatoire.Next(2);
-                    situation.Resiliations.Add(new Resiliation(new DateTime(year, month, 15, 16, 30, 0), motivationsResiliations[magic]));
+                    situation.Resiliations.Add(new Resiliation(new DateTime(year, month, 15, 16, 30, 0), SampleDataValues.motivationsResiliations[magic]));
                 }
                 //
                 int offreCount = aleatoire.Next(3);
@@ -87,10 +85,10 @@ public class DataGenTest
                     int year = aleatoire.Next(2015, 2025);
                     int month = aleatoire.Next(1, 13);
                     int magic = aleatoire.Next(3);
-                    situation.OffrePromotionnelles.Add(new OffrePromotionnelle(new DateTime(year, month, 15, 16, 30, 0), offrePromoCode[magic]));
+                    situation.OffrePromotionnelles.Add(new OffrePromotionnelle(new DateTime(year, month, 15, 16, 30, 0), SampleDataValues.offrePromoCode[magic]));
                 }
                 Console.WriteLine(JsonSerializer.Serialize(situation));
-                contrat.Situations.Add(new SituationRef(idSituation, datePremierEffet));
+                contrat.SituationsRefs.Add(new SituationRef(idSituation, datePremierEffet));
                 await collectionSituations.InsertAsync(situation.Id, situation);
 
             }

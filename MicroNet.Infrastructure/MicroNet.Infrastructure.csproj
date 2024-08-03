@@ -7,6 +7,8 @@
   <ItemGroup>
     <PackageReference Include="CouchbaseNetClient" Version="3.6.2" />
     <PackageReference Include="Couchbase.Extensions.DependencyInjection" Version="3.6.2" />
+    <PackageReference Include="Couchbase.Transactions" Version="3.6.2" />
+    <PackageReference Include="coverlet.collector" Version="6.0.0" />
   </ItemGroup>
 
   <PropertyGroup>

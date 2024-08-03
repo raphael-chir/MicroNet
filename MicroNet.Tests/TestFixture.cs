@@ -21,7 +21,7 @@ public class TestFixture
             {
                 services.AddSingleton<IConfiguration>(Configuration);
                 services.AddCouchbase(Configuration.GetSection("Couchbase"));
-                services.AddCouchbaseBucket<INamedBucketProvider>("travel-sample");
+                services.AddCouchbaseBucket<INamedBucketProvider>("mat-sample");
             })
             .Build();
 

@@ -4,15 +4,23 @@ namespace MicroNet.Domain
     {
         public string Id { get; private set; }
         public string NumSocietaire { get; private set; }
-        public DateTime DatePremierEffet { get; private set; }
-        public List<SituationRef> Situations { get; private set; }
+        public DateTime DatePremierEffet { get; set; }
+        public List<SituationRef> SituationsRefs { get; private set; }
 
-        public Contrat(string id, string numSocietaire, DateTime datePremierEffet, List<SituationRef> situations)
+        public Contrat(string id, string numSocietaire, DateTime datePremierEffet, List<SituationRef> situationsRefs)
         {
             Id = id;
             NumSocietaire = numSocietaire;
             DatePremierEffet = datePremierEffet;
-            Situations = situations;
+            SituationsRefs = situationsRefs;
+        }
+
+         public Contrat(string id, string numSocietaire, DateTime datePremierEffet)
+        {
+            Id = id;
+            NumSocietaire = numSocietaire;
+            DatePremierEffet = datePremierEffet;
+            SituationsRefs = new List<SituationRef>();
         }
 
     }
