@@ -207,11 +207,11 @@ dotnet run --project MicroNet.API
 ```
 ### XUnit Tests
 
-S00CBStandardCnxTest
-S01CBDICnxTests
-S02CBKVBasicTests
-S03CBKVTransactionsTests
-S04DataGenTests
+S00CBStandardCnxTest  
+S01CBDICnxTests  
+S02CBKVBasicTests  
+S03CBKVTransactionsTests  
+S04DataGenTests  
 
 ## Transactions
 
@@ -220,4 +220,28 @@ We include Couchbase.Extensions.DependencyInjection in MicroNet.Infrastructure.c
 cd into Micronet.Infrastructure
 ```
 dotnet add package Couchbase.Transactions --version 3.6.2
+```
+## K/V SubDocument Operation
+
+To avoid fetch an entire document, you can use LookUpIn method on the collection : 
+```
+ILookupInResult lookupInResult = await collectionSituations.LookupInAsync(situationId, [
+    LookupInSpec.Get("assures[0].nom"),
+    LookupInSpec.Get("assures[0].prenom"),
+    LookupInSpec.Get("offrePromotionnelles[0]")
+]);
+
+var nom = lookupInResult.ContentAs<string>(0);
+var prenom = lookupInResult.ContentAs<string>(1);
+var offrePromotionnelles = lookupInResult.ContentAs<OffrePromotionnelle>(2);
+```
+
+To mutate specific attributes of a doc, you can us MutateIn metod on the collection : 
+```
+await collectionSituations.MutateInAsync(situationId, specs =>
+{
+    specs.Replace("operation", SampleDataValues.operationsSituations[1]);
+    specs.ArrayAppend("assures",new Assure("Chir", "Raphael"));
+    specs.Insert("dateFinEffet", DateTime.Now);
+});
 ```
