@@ -102,7 +102,7 @@ public class S02CBKVBasicTests : IClassFixture<TestFixture>
             IMutationResult mutationResult = await collectionContrats.InsertAsync(key, contrat, options =>
                 {
                     options.Durability(DurabilityLevel.PersistToMajority);
-                    options.Expiry(TimeSpan.FromSeconds(20));
+                    options.Expiry(TimeSpan.FromSeconds(60));
                 }
             );
 
