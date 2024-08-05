@@ -1,11 +1,17 @@
+using System.Text.Json.Serialization;
+
 namespace MicroNet.Domain
 {
     public class Contrat
     {
-        public string Id { get; private set; }
-        public string NumSocietaire { get; private set; }
+        public string Id { get; set; }
+        public string NumSocietaire { get; set; }
         public DateTime DatePremierEffet { get; set; }
-        public List<SituationRef> SituationsRefs { get; private set; }
+        public List<SituationRef> SituationsRefs { get; set; }
+
+        public Contrat(){
+            
+        }
 
         public Contrat(string id, string numSocietaire, DateTime datePremierEffet, List<SituationRef> situationsRefs)
         {
@@ -15,7 +21,7 @@ namespace MicroNet.Domain
             SituationsRefs = situationsRefs;
         }
 
-         public Contrat(string id, string numSocietaire, DateTime datePremierEffet)
+        public Contrat(string id, string numSocietaire, DateTime datePremierEffet)
         {
             Id = id;
             NumSocietaire = numSocietaire;
