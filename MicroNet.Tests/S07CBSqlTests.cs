@@ -99,8 +99,20 @@ public class S07CBSqlTests : IClassFixture<TestFixture>
        */
 
         /*
+        ********************************************************************************************
+           List all contracts containing a situation ref which datePremierEffet < 2019
+           SELECT * FROM contrats c
+           WHERE ANY situationRef IN c.situationsRefs[] SATISFIES DATE_DIFF_STR(situationRef.datePremierEffet,"2019-01-01T00:00:00","year")<0 end
+
+           List all contracts containing a situation ref which datePremierEffet = 2019
+           SELECT * from contrats c
+           WHERE ANY situationRef IN c.situationsRefs[] SATISFIES DATE_FORMAT_STR(situationRef.datePremierEffet,"YYYY")="2021" end
+        ********************************************************************************************
+       */
+
+        /*
          ********************************************************************************************
-            Insert a situation to a given contract
+            Insert a situation to a given contract (can replace with UPSERT to update or insert)
             INSERT INTO situations (key, {})
          ********************************************************************************************
         */
@@ -115,48 +127,11 @@ public class S07CBSqlTests : IClassFixture<TestFixture>
             }
         );
 
-
-
-
-
-
-
-        //Permet de créer une résiliation sur un contrat
-
-
-
-        //lister les references situation dans le but d'avoir un historique d'un contrat mav
-
-        //Récupère les offres promotionnelles d'un societaire
-
-        //Permet de créer une souscription
-        //Récupère un contrat mav
-        //Permet de controler une souscription
-        //Contrôler l'objet résiliation
-        //Permet de créer une résiliation sur un contrat
-        //Contrôler l'objet annulation
-        //Permet de créer une annulation sur un contrat
-        //lister les situations d'un contrat mav
-        //lister les references situation dans le but d'avoir un historique d'un contrat mav
-        //lister les résiliation d'une situation d'un contrat mav
-        //Met à jour les informations de signature de la situation
-        //Récupère les offres promotionnelles d'un societaire
-        //Liste des Canaux
-        //Liste des Origines
-        //Liste des Csp
-        //Liste des code taxe Pays
-        //Liste des Contextes souscription
-        //Liste des modes de paiement
-        //Liste des erreurs
-        //listerMotifResiliation
-        //listerSousMotifResiliation
-        //Liste les modes de remboursement résiliation
-        //Liste les mmotivations societaire résiliation
-        //Permet de contrôler la résiliation de tous les contrats MAV d'un sociétaire
-        //Permet de résilier tous les contrats MAV d'un sociétaire
-        //Permet d'annuler des résiliations d'un sociétaire. A utiliser pour annluer par une résilation globale
-
+        /*
+         ********************************************************************************************
+            Update a situation to a given contract
+            INSERT INTO situations (key, {})
+         ********************************************************************************************
+        */
     }
-
-
 }

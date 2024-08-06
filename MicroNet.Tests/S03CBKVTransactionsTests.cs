@@ -14,19 +14,23 @@ using Couchbase.Transactions;
 using Couchbase.Transactions.Config;
 using Couchbase.Transactions.Error;
 
-public class S03CBKVTransactionsTests
+public class S03CBKVTransactionsTests : IClassFixture<TestFixture>
 {
+    private readonly IClusterProvider _clusterProvider;
+
+    private readonly INamedBucketProvider _provider;
+
+    public S03CBKVTransactionsTests(TestFixture fixture)
+    {
+        _clusterProvider = fixture.ServiceProvider.GetRequiredService<IClusterProvider>();
+        _provider = fixture.ServiceProvider.GetRequiredService<INamedBucketProvider>();
+    }
+    
     [Fact]
     public async Task TransactionDOTest()
     {
-        // We need a ref to cluster to perform transaction
-        var cluster = await Cluster.ConnectAsync(
-            // Update these credentials for your Local Couchbase instance!
-            "ec2-51-20-133-117.eu-north-1.compute.amazonaws.com, ec2-16-170-172-163.eu-north-1.compute.amazonaws.com, ec2-51-20-133-117.eu-north-1.compute.amazonaws.com",
-            "admin",
-            "111111");
-
-        var bucket = await cluster.BucketAsync("mat-sample");
+        var cluster = await _clusterProvider.GetClusterAsync();
+        var bucket = await _provider.GetBucketAsync();
         var scope = await bucket.ScopeAsync("contrats");
         var collectionContrats = await scope.CollectionAsync("contrats");
         var collectionSituations = await scope.CollectionAsync("situations");
