@@ -2,6 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Couchbase.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net;
 
 public class TestFixture
 {
@@ -26,5 +27,6 @@ public class TestFixture
             .Build();
 
         ServiceProvider = host.Services.CreateScope().ServiceProvider;
+        HttpClient.DefaultProxy = new WebProxy("http://localhost:8080/", true);
     }
 }
